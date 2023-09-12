@@ -1,0 +1,49 @@
+#-----------POD CREATED
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendation-deployment
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommendation-app
+  template:
+    metadata:
+      labels:
+        app: recommendation-app
+    spec:
+     # nodeSelector:
+      #  kubernetes.io/hostname: cluster1-m03
+      containers:
+      - name: recommendation-container
+        image: hamzaarshad10/recommendationservice:latest
+        ports:
+        - containerPort: 8080
+        env:
+          - name: PRODUCT_CATALOG_SERVICE_ADDR
+            value: "productcatalog:3550"  
+          - name: PORT
+            value: "8080"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 250Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendation
+  namespace: production
+spec:
+  selector:
+    app: recommendation-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  #type: NodePort 

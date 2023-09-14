@@ -135,4 +135,4 @@ kubectl  get pods,domains,httpsedges,tunnels -n ngrok-ingress-controller
 ## Deliverables
 Acceptance criteria for the task are as follows: 
 * Ingress should be configured.
-# infrastructure-production
+
